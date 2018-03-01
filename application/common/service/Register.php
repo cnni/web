@@ -15,9 +15,11 @@ class Register extends Common
     {
         try {
             if (!isUsername($data['username'])) return $this->err(2, '用户名由2-16个数字字母汉字下划线和横杠组成');
-            $insert_username = ['username' => strtolower($data['username'])];
             if (!isPassword($data['password'])) return $this->err(3, '密码由6-16个字符组成');
-            $insert_username['password'] = md5($data['password']);
+            $insert_username = [
+                'username' => strtolower($data['username']),
+                'password' => md5($data['password']),
+            ];
             if (md5($data['password2']) != $insert_username['password']) return $this->err(4, '两次密码输入不同');
             if (db('username')->where('username', $insert_username['username'])->count()) return $this->err(5, '用户名被占用');
             $insert_member = ['sex' => $data['sex'] < 1 ? 0 : ($data['sex'] > 1 ? 2 : 1)];
