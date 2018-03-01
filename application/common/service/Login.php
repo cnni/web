@@ -17,8 +17,8 @@ class Login extends Common
             if (!isUsername($data['username'])) return $this->err(2, '用户名由2-16个数字字母汉字下划线和横杠组成');
             if (!isPassword($data['password'])) return $this->err(3, '密码由6-16个字符组成');
             $username = db('username')->where('username', $data['username'])->find();
-            if (!$username) return $this->err(4, '用户名或密码错误');
-            if ($username['password'] != md5($data['password'])) return $this->err(5, '用户名或密码错误');
+            if (!$username) return $this->err(4, '用户名不存在');
+            if ($username['password'] != md5($data['password'])) return $this->err(5, '密码错误');
             if (!$username['status']) return $this->err(6, '用户禁用了用户名登录');
             $member = db('member')->find($username['member_id']);
             if (!$member) return $this->err(7, '用户数据异常');
