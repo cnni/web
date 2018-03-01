@@ -20,4 +20,15 @@ class Member extends Common
         ]);
         return $this->fetchs();
     }
+
+    public function register()
+    {
+        if ($this->member) header('Location:' . url('@index/member'));
+        $this->assign([
+            'title' => '注册',
+            'keywords' => '注册',
+            'description' => '注册',
+        ]);
+        return $this->fetchs();
+    }
 }
