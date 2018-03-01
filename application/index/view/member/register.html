@@ -1,5 +1,5 @@
-{include file='common@public/head' /}
-<div class="container-fluid">
+{include file='common@public/head,common@public/top' /}
+<div class="container">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -42,8 +42,7 @@
                             </div>
                             <div class="form-control">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" name="sex" value="0" id="sex0"
-                                           checked>
+                                    <input class="custom-control-input" type="radio" name="sex" value="0" id="sex0" checked>
                                     <label class="custom-control-label" for="sex0">保密</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
@@ -133,8 +132,13 @@
                 formRegister.eq(2).show();
                 break;
             default:
-                btnRegister.eq(0).removeClass('btn-secondary').addClass('btn-primary');
-                formRegister.eq(0).show();
+                if (isMobile) {
+                    btnRegister.eq(1).removeClass('btn-secondary').addClass('btn-primary');
+                    formRegister.eq(1).show();
+                } else {
+                    btnRegister.eq(0).removeClass('btn-secondary').addClass('btn-primary');
+                    formRegister.eq(0).show();
+                }
                 break;
         }
     };

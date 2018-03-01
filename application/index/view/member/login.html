@@ -1,5 +1,5 @@
-{include file='common@public/head' /}
-<div class="container-fluid">
+{include file='common@public/head,common@public/top' /}
+<div class="container">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,8 +103,13 @@
                 formLogin.eq(2).show();
                 break;
             default:
-                btnLogin.eq(0).removeClass('btn-secondary').addClass('btn-primary');
-                formLogin.eq(0).show();
+                if (isMobile) {
+                    btnLogin.eq(1).removeClass('btn-secondary').addClass('btn-primary');
+                    formLogin.eq(1).show();
+                } else {
+                    btnLogin.eq(0).removeClass('btn-secondary').addClass('btn-primary');
+                    formLogin.eq(0).show();
+                }
                 break;
         }
     };
