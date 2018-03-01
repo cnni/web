@@ -1,0 +1,30 @@
+{if condition='$isMobile'}
+<div class="container" style="border-bottom: 1px solid #ccc">
+    <a href="{:url('@index')}" class="btn btn-link btn-sm">首页</a>
+    <a href="{:url('@index/member')}" class="btn btn-link btn-sm">会员中心</a>
+    {if condition='session("member")'}
+    <a href="{:url('@index/member')}" class="btn btn-link btn-sm">{:session('member.nickname')}</a>
+    <a href="{:url('@index/member/logout')}" class="btn btn-link btn-sm">退出</a>
+    {else /}
+    <a href="{:url('@index/member/login')}" class="btn btn-link btn-sm">登录</a>
+    <a href="{:url('@index/member/register')}" class="btn btn-link btn-sm">注册</a>
+    {/if}
+</div>
+{else /}
+<div class="container-fluid" style="border-bottom: 1px solid #ccc">
+    <div class="container">
+        <div style="float: right">
+            <a href="{:url('@index/member')}" class="btn btn-link btn-sm">会员中心</a>
+            {if condition='session("member")'}
+            <a href="{:url('@index/member')}" class="btn btn-link btn-sm">{:session('member.nickname')}</a>
+            <a href="{:url('@index/member/logout')}" class="btn btn-link btn-sm">退出</a>
+            {else /}
+            <a href="{:url('@index/member/login')}" class="btn btn-link btn-sm">登录</a>
+            <a href="{:url('@index/member/register')}" class="btn btn-link btn-sm">注册</a>
+            {/if}
+        </div>
+        <div style="float: left"><a href="{:url('@index')}" class="btn btn-link btn-sm">首页</a></div>
+        <div style="clear: both"></div>
+    </div>
+</div>
+{/if}
