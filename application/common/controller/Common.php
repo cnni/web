@@ -48,6 +48,7 @@ class Common extends Controller
     protected function fetchs($template = '', $vars = [], $config = [])
     {
         $vars['sys'] = $this->sys;
+        $vars['isMobile'] = $this->request->isMobile();
         return $this->fetch($template, $vars, $config);
     }
 }
