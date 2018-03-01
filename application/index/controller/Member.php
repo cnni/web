@@ -42,4 +42,11 @@ class Member extends Common
         if ($this->member) return $this->err(120, '您已登陆，无需重复登陆');
         return (new Register())->username($this->request->only(['username', 'password', 'password2', 'sex', 'inviter']));
     }
+
+    public function logout()
+    {
+        if ($this->member) session('member', null);
+        if ($this->request->isAjax()) return $this->succ();
+        header('Location:' . url('@index/member/login'));
+    }
 }
