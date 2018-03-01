@@ -8,6 +8,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\service\Register;
 
 class Member extends Common
 {
@@ -30,5 +31,15 @@ class Member extends Common
             'description' => '注册',
         ]);
         return $this->fetchs();
+    }
+
+    public function usernameregister()
+    {
+        if (!$this->request->isAjax()) {
+            if ($this->member) header('Location:' . url('@index/member'));
+            header('Location:' . url('@index/member/register'));
+        }
+        if ($this->member) return $this->err(120, '您已登陆，无需重复登陆');
+        return (new Register())->username($this->request->only(['username', 'password', 'password2', 'sex', 'inviter']));
     }
 }

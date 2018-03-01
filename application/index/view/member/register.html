@@ -57,6 +57,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-row small" id="usernameFormErr" style="color: red"></div>
                 </div>
                 <div class="modal-footer">
                     <a href="{:url('@index/member/login')}#username" class="btn btn-link btn-sm">已有用户名?立刻登录!</a>
@@ -67,6 +68,19 @@
                 var usernameForm = $('#usernameForm');
                 usernameForm.on('submit', function (e) {
                     e.preventDefault();
+                    $.ajax({
+                        url: '{:url("@index/member/usernameregister")}',
+                        type: 'post',
+                        data: usernameForm.serialize(),
+                        dataType: 'json',
+                        success: function (r) {
+                            if (r.status) {
+                                location.href = '{:url("@index/member")}';
+                            } else {
+                                $('#usernameFormErr').html(r.msg + '[' + r.code + ']');
+                            }
+                        }
+                    });
                 });
             </script>
             <form id="mobileForm" style="display: none">
