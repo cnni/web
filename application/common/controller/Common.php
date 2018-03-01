@@ -44,4 +44,10 @@ class Common extends Controller
             'data' => $data,
         ];
     }
+
+    protected function fetchs($template = '', $vars = [], $config = [])
+    {
+        $vars['sys'] = $this->sys;
+        return $this->fetch($template, $vars, $config);
+    }
 }
