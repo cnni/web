@@ -35,12 +35,17 @@ class Member extends Common
 
     public function usernameregister()
     {
-        if (!$this->request->isAjax()) {
-            if ($this->member) header('Location:' . url('@index/member'));
+        if ($this->member) {
+            if ($this->request->isAjax()) return $this->err(120, '您已登陆无需注册');
             header('Location:' . url('@index/member/register'));
         }
-        if ($this->member) return $this->err(120, '您已登陆，无需重复登陆');
-        return (new Register())->username($this->request->only(['username', 'password', 'password2', 'sex', 'inviter']));
+        $register = (new Register())->username($this->request->only(['username', 'password', 'password2', 'sex', 'inviter']));
+        if ($this->request->isAjax()) return $register;
+        if ($register['status']) header('Location:' . url('@index/member'));
+        echo '<script>';
+        echo 'alert("' . $register['msg'] . '[' . $register['code'] . ']' . '");';
+        if (isset($_SERVER["HTTP_REFERER"]) && strlen($_SERVER["HTTP_REFERER"])) echo 'location.href="' . $_SERVER["HTTP_REFERER"] . '";'; else echo 'location.href="' . url('@index/member') . '";';
+        echo '</script>';
     }
 
     public function logout()
