@@ -22,4 +22,24 @@ class Common extends Controller
             if ($this->sys) cache('sys', $this->sys);
         }
     }
+
+    protected function succ($data = [], $code = 0, $msg = '成功')
+    {
+        return [
+            'status' => true,
+            'code' => $code,
+            'msg' => $msg,
+            'data' => $data,
+        ];
+    }
+
+    protected function err($code = 0, $msg = '失败', $data = [])
+    {
+        return [
+            'status' => false,
+            'code' => $code,
+            'msg' => $msg,
+            'data' => $data,
+        ];
+    }
 }
