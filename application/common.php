@@ -9,3 +9,9 @@ if (!function_exists('p')) {
         }
     }
 }
+if (!function_exists('isMobile')) {
+    function isMobile($mobile = '')
+    {
+        return preg_match('/^1[3456789]\d{9}$/', $mobile);
+    }
+}
