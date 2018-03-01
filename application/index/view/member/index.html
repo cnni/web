@@ -1,3 +1,19 @@
-{include file='common@public/head' /}
-member
+{include file='common@public/head,common@public/top' /}
+<div class="container">
+    {if condition='$isMobile'}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">用户中心</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+    {else /}
+
+    {/if}
+</div>
 {include file='common@public/foot' /}
