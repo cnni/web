@@ -21,3 +21,10 @@ if (!function_exists('isUsername')) {
         return preg_match('/^[A-Za-z0-9_\x4E00-\x9FA5-]{2,16}$/iu', $username);
     }
 }
+if (!function_exists('isPassword')) {
+    function isPassword($password = '')
+    {
+        $strlen = strlen($password);
+        return $strlen > 5 && $strlen < 17;
+    }
+}
