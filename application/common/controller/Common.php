@@ -12,6 +12,7 @@ use think\Controller;
 class Common extends Controller
 {
     public $sys = [];
+    public $member = [];
 
     public function __construct()
     {
@@ -21,6 +22,7 @@ class Common extends Controller
             $this->sys = model('sys')->column('val', 'code');
             if ($this->sys) cache('sys', $this->sys);
         }
+        $this->member = session('member');
     }
 
     protected function succ($data = [], $code = 0, $msg = '成功')
