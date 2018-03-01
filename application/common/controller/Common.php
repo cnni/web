@@ -19,7 +19,7 @@ class Common extends Controller
         parent::__construct();
         $this->sys = cache('sys');
         if (!$this->sys) {
-            $this->sys = model('sys')->column('val', 'code');
+            $this->sys = db('sys')->column('val', 'code');
             if ($this->sys) cache('sys', $this->sys);
         }
         $this->member = session('member');
