@@ -15,6 +15,7 @@ class Member extends Common
 {
     public function index()
     {
+        if (!$this->member) header('Location:' . url('@index/member/login'));
         $this->assign([
             'title' => '会员中心',
             'keywords' => '会员中心',
