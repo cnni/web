@@ -8,6 +8,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\service\Login;
 use app\common\service\Register;
 
 class Member extends Common
@@ -44,6 +45,32 @@ class Member extends Common
         if ($register['status']) header('Location:' . url('@index/member'));
         echo '<script>';
         echo 'alert("' . $register['msg'] . '[' . $register['code'] . ']' . '");';
+        if (isset($_SERVER["HTTP_REFERER"]) && strlen($_SERVER["HTTP_REFERER"])) echo 'location.href="' . $_SERVER["HTTP_REFERER"] . '";'; else echo 'location.href="' . url('@index/member') . '";';
+        echo '</script>';
+    }
+
+    public function login()
+    {
+        if ($this->member) header('Location:' . url('@index/member'));
+        $this->assign([
+            'title' => '登录',
+            'keywords' => '登录',
+            'description' => '登录',
+        ]);
+        return $this->fetchs();
+    }
+
+    public function usernamelogin()
+    {
+        if ($this->member) {
+            if ($this->request->isAjax()) return $this->err(120, '您已登陆不能重复登录');
+            header('Location:' . url('@index/member'));
+        }
+        $login = (new Login())->username($this->request->only(['username', 'password']));
+        if ($this->request->isAjax()) return $login;
+        if ($login['status']) header('Location:' . url('@index/member'));
+        echo '<script>';
+        echo 'alert("' . $login['msg'] . '[' . $login['code'] . ']' . '");';
         if (isset($_SERVER["HTTP_REFERER"]) && strlen($_SERVER["HTTP_REFERER"])) echo 'location.href="' . $_SERVER["HTTP_REFERER"] . '";'; else echo 'location.href="' . url('@index/member') . '";';
         echo '</script>';
     }
