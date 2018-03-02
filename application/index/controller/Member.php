@@ -80,6 +80,11 @@ class Member extends Common
     {
         if ($this->member) session('member', null);
         if ($this->request->isAjax()) return $this->succ();
+        $param = $this->request->only(['go']);
+        if (isset($param['go']) && strlen($param['go'])) {
+            header('Location:' . $param['go']);
+            die;
+        }
         header('Location:' . url('@index/member/login'));
     }
 }
