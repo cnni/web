@@ -7,6 +7,7 @@
  */
 namespace app\common\controller;
 
+use app\common\model\Sys;
 use think\Controller;
 
 class Common extends Controller
@@ -19,7 +20,7 @@ class Common extends Controller
         parent::__construct();
         $this->sys = cache('sys');
         if (!$this->sys) {
-            $this->sys = db('sys')->column('val', 'code');
+            $this->sys = Sys::where('status', '=', 1)->column('val', 'code');
             if ($this->sys) cache('sys', $this->sys);
         }
         $this->member = session('member');
