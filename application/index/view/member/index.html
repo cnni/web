@@ -31,17 +31,7 @@
     </tr>
     <tr>
         <td>在线</td>
-        <td>
-            {php}
-            $time = time() - session('member.logintime');
-            $h = floor($time / 3600);
-            if($h > 0) echo $h . '小时';
-            $i = floor(($time - 3600 * $h) / 60);
-            if($i > 0) echo $i . '分钟';
-            $s = floor((($time - 3600 * $h) - 60 * $i) % 60);
-            echo $s.'秒';
-            {/php}
-        </td>
+        <td>{:timeToStr(time() - session('member.logintime'))}</td>
     </tr>
     </tbody>
 </table>
