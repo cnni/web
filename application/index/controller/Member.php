@@ -65,7 +65,7 @@ class Member extends Common
             'title' => '昵称',
             'keywords' => '昵称',
             'description' => '昵称',
-            'list' => NicknameMember::where('member_id', '=', $this->member['id'])->paginate(),
+            'list' => NicknameMember::where('member_id', '=', $this->member['id'])->order(['status' => 'desc', 'id'])->paginate(),
         ]);
         return $this->myfetch();
     }
