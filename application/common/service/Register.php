@@ -43,6 +43,7 @@ class Register extends Common
                 'nickname' => $insert_username['username'],
                 'logintype' => 'username',
                 'username' => $insert_username['username'],
+                'username_id' => $username_id,
                 'logintime' => $time,
                 'logindatetime' => date('Y-m-d H:i:s', $time),
             ]);

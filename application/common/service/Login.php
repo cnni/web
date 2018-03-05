@@ -28,6 +28,7 @@ class Login extends Common
                 'id' => $member['id'],
                 'logintype' => 'username',
                 'username' => $username['username'],
+                'username_id' => $username['id'],
                 'logintime' => $time,
                 'logindatetime' => date('Y-m-d H:i:s', $time),
             ];
