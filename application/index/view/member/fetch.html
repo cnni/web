@@ -1,0 +1,10 @@
+{include file='common@public/head,common@public/top' /}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2">
+            <a href="{:url('@index/member')}" class="btn btn-link btn-block">会员首页</a>
+        </div>
+        <div class="col-sm-9 col-md-10 col-lg-10 col-xs-10">{php}echo $myfetch;{/php}</div>
+    </div>
+</div>
+{include file='common@public/foot' /}
