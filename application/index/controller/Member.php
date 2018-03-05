@@ -20,6 +20,12 @@ class Member extends Common
         }
     }
 
+    public function myfetch($template = '', $vars = [], $config = [])
+    {
+        $vars['myfetch'] = $this->fetchs($template, $vars, $config);
+        return $this->fetchs('index@member:fetch', $vars, $config);
+    }
+
     public function index()
     {
         $this->assign([
