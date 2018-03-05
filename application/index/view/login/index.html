@@ -1,0 +1,121 @@
+{include file='common@public/head,common@public/top' /}
+<div class="container">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="btn-group">
+                    <a href="#username" class="btn btn-login">用户名登录</a>
+                    <a href="#mobile" class="btn btn-login">手机登录</a>
+                    <a href="#email" class="btn btn-login">邮箱登录</a>
+                </div>
+            </div>
+            <form id="usernameForm" style="display: none">
+                <div class="modal-body">
+                    <div class="form-group form-row">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">用户名</div>
+                            </div>
+                            <input type="text" name="username" class="form-control" placeholder="用户名" required>
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">密　码</div>
+                            </div>
+                            <input type="password" name="password" class="form-control" placeholder="密码" required>
+                        </div>
+                    </div>
+                    <div class="form-row small" id="usernameFormErr" style="color: red"></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{:url('@index/register')}#username" class="btn btn-link btn-sm">没有用户名?立刻注册!</a>
+                    <button type="submit" class="btn btn-primary">确定</button>
+                </div>
+            </form>
+            <script>
+                var usernameForm = $('#usernameForm');
+                usernameForm.on('submit', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '{:url("@index/login/username")}',
+                        type: 'post',
+                        data: usernameForm.serialize(),
+                        dataType: 'json',
+                        success: function (r) {
+                            if (r.status) {
+                                location.href = '{:url("@index/member")}';
+                            } else {
+                                $('#usernameFormErr').html(r.msg + '[' + r.code + ']');
+                            }
+                        }
+                    });
+                });
+            </script>
+            <form id="mobileForm" style="display: none">
+                <div class="modal-body">
+                    <div class="form-group form-row">
+                        <div class="input-group">
+                            <div class="form-control is-invalid">维护中……</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </form>
+            <script>
+                var mobileForm = $('#mobileForm');
+            </script>
+            <form id="emailForm" style="display: none">
+                <div class="modal-body">
+                    <div class="form-group form-row">
+                        <div class="input-group">
+                            <div class="form-control is-invalid">维护中……</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </form>
+            <script>
+                var emailForm = $('#emailForm');
+            </script>
+        </div>
+    </div>
+</div>
+<script>
+    var myhashchange = function () {
+        var hash = location.hash.replace('#', '');
+        var btnLogin = $('.btn-login');
+        btnLogin.removeClass('btn-primary').addClass('btn-secondary');
+        var formLogin = btnLogin.parents('.modal-header').nextAll('form');
+        formLogin.hide();
+        switch (hash) {
+            case 'username':
+                btnLogin.eq(0).removeClass('btn-secondary').addClass('btn-primary');
+                formLogin.eq(0).show();
+                break;
+            case 'mobile':
+                btnLogin.eq(1).removeClass('btn-secondary').addClass('btn-primary');
+                formLogin.eq(1).show();
+                break;
+            case 'email':
+                btnLogin.eq(2).removeClass('btn-secondary').addClass('btn-primary');
+                formLogin.eq(2).show();
+                break;
+            default:
+                if (isMobile) {
+                    btnLogin.eq(1).removeClass('btn-secondary').addClass('btn-primary');
+                    formLogin.eq(1).show();
+                } else {
+                    btnLogin.eq(0).removeClass('btn-secondary').addClass('btn-primary');
+                    formLogin.eq(0).show();
+                }
+                break;
+        }
+    };
+    myhashchange();
+    window.onhashchange = function () {
+        myhashchange();
+    };
+</script>
+{include file='common@public/foot' /}
