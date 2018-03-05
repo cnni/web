@@ -33,7 +33,7 @@ class Member extends Common
             'keywords' => '会员中心',
             'description' => '会员中心',
         ]);
-        return $this->fetchs();
+        return $this->myfetch();
     }
 
     public function logout()
