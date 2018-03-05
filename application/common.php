@@ -28,3 +28,32 @@ if (!function_exists('isPassword')) {
         return $strlen > 5 && $strlen < 17;
     }
 }
+if (!function_exists('timeToStr')) {
+    function timeToStr($time = 0)
+    {
+        $d = floor($time / 86400);
+        if ($d > 0) {
+            echo $d . '天';
+            $time -= $d * 86400;
+        }
+        $h = floor($time / 3600);
+        if ($h > 0) {
+            echo $h . '小时';
+            $time -= $h * 3600;
+        } else {
+            if ($d > 0) {
+                echo '0小时';
+            }
+        }
+        $i = floor($time / 60);
+        if ($i > 0) {
+            echo $i . '分钟';
+            $time -= $i * 60;
+        } else {
+            if ($d > 0 || $h > 0) {
+                echo '0分钟';
+            }
+        }
+        echo floor($time % 60) . '秒';
+    }
+}
