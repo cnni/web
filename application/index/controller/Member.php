@@ -8,6 +8,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\NicknameMember;
 
 class Member extends Common
 {
@@ -54,6 +55,17 @@ class Member extends Common
             'title' => '用户名',
             'keywords' => '用户名',
             'description' => '用户名',
+        ]);
+        return $this->myfetch();
+    }
+
+    public function nickname()
+    {
+        $this->assign([
+            'title' => '昵称',
+            'keywords' => '昵称',
+            'description' => '昵称',
+            'list' => NicknameMember::where('member_id', '=', $this->member['id'])->paginate(),
         ]);
         return $this->myfetch();
     }

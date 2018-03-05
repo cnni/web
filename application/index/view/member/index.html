@@ -8,8 +8,8 @@
     <tr>
         <td>用户ID</td>
         <td>{:session('member.id')}</td>
-    {switch :session('member.logintype')}
-    {case username}
+        {switch :session('member.logintype')}
+        {case username}
     </tr>
     <tr>
         <td>当前登录方式</td>
@@ -23,7 +23,7 @@
     {/switch}
     <tr>
         <td>昵称</td>
-        <td>{:session('member.nickname')}</td>
+        <td><a href="{:url('nickname')}">{:session('member.nickname')}</a></td>
     </tr>
     <tr>
         <td>登录时间</td>

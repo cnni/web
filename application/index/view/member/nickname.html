@@ -1,0 +1,23 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>昵称</th>
+        <th>状态</th>
+        <th>添加或设置时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $list as $v}
+    <tr>
+        <td>{$v.nickname}</td>
+        <td>{$v.status?'默认':''}</td>
+        <td>{$v.addtime}</td>
+    </tr>
+    {/foreach}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3">{$list->render()}</td>
+    </tr>
+    </tfoot>
+</table>
