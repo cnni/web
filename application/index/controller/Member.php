@@ -8,6 +8,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\Username;
 
 class Member extends Common
 {
@@ -46,5 +47,15 @@ class Member extends Common
             die;
         }
         header('Location:' . url('@index/login'));
+    }
+
+    public function username()
+    {
+        $this->assign([
+            'title' => '用户名',
+            'keywords' => '用户名',
+            'description' => '用户名',
+        ]);
+        return $this->myfetch();
     }
 }
