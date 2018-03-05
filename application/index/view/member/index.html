@@ -8,13 +8,13 @@
     <tr>
         <td>用户ID</td>
         <td>{:session('member.id')}</td>
+    {switch :session('member.logintype')}
+    {case username}
     </tr>
     <tr>
         <td>当前登录方式</td>
-        <td>{:session('member.logintype')}</td>
+        <td>用户名登录</td>
     </tr>
-    {switch :session('member.logintype')}
-    {case 'username'}
     <tr>
         <td>用户名</td>
         <td>{:session('member.username')}</td>
@@ -24,6 +24,24 @@
     <tr>
         <td>昵称</td>
         <td>{:session('member.nickname')}</td>
+    </tr>
+    <tr>
+        <td>登录时间</td>
+        <td>{:session('member.logindatetime')}</td>
+    </tr>
+    <tr>
+        <td>在线</td>
+        <td>
+            {php}
+            $time = time() - session('member.logintime');
+            $h = floor($time / 3600);
+            if($h > 0) echo $h . '小时';
+            $i = floor(($time - 3600 * $h) / 60);
+            if($i > 0) echo $i . '分钟';
+            $s = floor((($time - 3600 * $h) - 60 * $i) % 60);
+            echo $s.'秒';
+            {/php}
+        </td>
     </tr>
     </tbody>
 </table>
