@@ -8,7 +8,6 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
-use app\common\model\Username;
 
 class Member extends Common
 {
