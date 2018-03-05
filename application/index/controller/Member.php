@@ -9,6 +9,7 @@ namespace app\index\controller;
 
 use app\common\controller\Common;
 use app\common\model\NicknameMember;
+use app\common\model\UsernameLogout;
 
 class Member extends Common
 {
@@ -40,12 +41,20 @@ class Member extends Common
     public function logout()
     {
         session('member', null);
+        switch ($this->member['logintype']) {
+            case 'username':
+                (new UsernameLogout())->save([
+                    'username_id' => $this->member['username_id'],
+                    'username' => $this->member['username'],
+                    'onlinetime' => time() - $this->member['logintime'],
+                ]);
+                break;
+            default:
+                break;
+        }
         if ($this->request->isAjax()) return $this->succ();
         $param = $this->request->only(['go']);
-        if (isset($param['go']) && strlen($param['go'])) {
-            header('Location:' . $param['go']);
-            die;
-        }
+        if (isset($param['go']) && strlen($param['go'])) header('Location:' . $param['go']);
         header('Location:' . url('@index/login'));
     }
 
