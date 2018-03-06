@@ -31,6 +31,7 @@ class Login extends Common
                 'username_id' => $username['id'],
                 'logintime' => $time,
                 'logindatetime' => date('Y-m-d H:i:s', $time),
+                'sex' => $member['sex'],
             ];
             try {
                 $nickname_member = db('nickname_member')->where('member_id', $member['id'])->order('id DESC')->find();

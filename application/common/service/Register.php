@@ -46,6 +46,7 @@ class Register extends Common
                 'username_id' => $username_id,
                 'logintime' => $time,
                 'logindatetime' => date('Y-m-d H:i:s', $time),
+                'sex' => $insert_member['sex'],
             ]);
             try {
                 $nickname = db('nickname')->where('nickname', $insert_username['username'])->find();
