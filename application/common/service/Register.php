@@ -56,6 +56,7 @@ class Register extends Common
             'sex' => $member->sex,
         ]);
         (new UsernameLogin())->save([
+            'member_id' => $member->id,
             'username_id' => $username->id,
             'username' => $username->username,
             'password' => $username->password,
