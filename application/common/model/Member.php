@@ -12,4 +12,8 @@ use think\Model;
 class Member extends Model
 {
     protected $pk = 'id';
+    protected $autoWriteTimestamp = 'datetime';
+    protected $createTime = 'addtime';
+    protected $updateTime = 'lasttime';
+    protected $readonly = ['pid', 'level', 'path'];
 }
