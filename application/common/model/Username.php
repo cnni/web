@@ -12,4 +12,13 @@ use think\Model;
 class Username extends Model
 {
     protected $pk = 'id';
+    protected $autoWriteTimestamp = 'datetime';
+    protected $createTime = 'addtime';
+    protected $updateTime = 'lasttime';
+    protected $readonly = ['username', 'member_id'];
+
+    public function setUsernameAttr($value)
+    {
+        return strtolower($value);
+    }
 }
