@@ -1,0 +1,58 @@
+<div class="modal-dialog">
+    <form class="modal-content" id="sexForm">
+        <div class="modal-header">
+            <h4 class="modal-title">性别</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group form-row">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">请选择</div>
+                    </div>
+                    <div class="form-control">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input class="custom-control-input" type="radio" name="sex" value="0" id="sex0" {eq name=":session('member.sex')" value="0" }checked{/eq}>
+                            <label class="custom-control-label" for="sex0">保密</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input class="custom-control-input" type="radio" name="sex" value="1" id="sex1" {eq name=":session('member.sex')" value="1" }checked{/eq}>
+                            <label class="custom-control-label" for="sex1">男</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input class="custom-control-input" type="radio" name="sex" value="2" id="sex2" {eq name=":session('member.sex')" value="2" }checked{/eq}>
+                            <label class="custom-control-label" for="sex2">女</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group small" id="sexFormErr" style="color: red"></div>
+            <div class="form-group small" id="sexFormSucc" style="color: green"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">确定</button>
+        </div>
+    </form>
+</div>
+<script>
+    var sexForm = $('#sexForm');
+    var sexFormErr = $('#sexFormErr');
+    var sexFormSucc = $('#sexFormSucc');
+    sexForm.on('submit', function (e) {
+        e.preventDefault();
+        sexFormErr.html('');
+        sexFormSucc.html('');
+        $.ajax({
+            url: location.href,
+            type: 'post',
+            data: sexForm.serialize(),
+            dataType: 'json',
+            success: function (r) {
+                if (r.status) {
+                    sexFormSucc.html(r.msg);
+                } else {
+                    sexFormErr.html(r.msg + '[' + r.code + ']');
+                }
+            }
+        });
+    });
+</script>

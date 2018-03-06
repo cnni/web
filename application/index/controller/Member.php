@@ -78,4 +78,31 @@ class Member extends Common
         ]);
         return $this->myfetch();
     }
+
+    public function sex()
+    {
+        if (!$this->request->isAjax()) {
+            $this->assign([
+                'title' => '性别',
+                'keywords' => '性别',
+                'description' => '性别',
+            ]);
+            return $this->myfetch();
+        }
+        $param = $this->request->only(['sex']);
+        if (!isset($param['sex'])) return $this->err(1, '参数错误');
+        $param['sex'] = intval($param['sex']);
+        if ($param['sex'] < 1) {
+            $param['sex'] = 0;
+        } elseif ($param['sex'] > 1) {
+            $param['sex'] = 2;
+        } else {
+            $param['sex'] = 1;
+        }
+        $member = \app\common\model\Member::get($this->member['id']);
+        if ($member->sex == $param['sex']) return $this->err(2, '没有变化');
+        if (!$member->save(['sex' => $param['sex']])) return $this->err(3, '更新失败');
+        session('member.sex', $param['sex']);
+        return $this->succ();
+    }
 }

@@ -26,6 +26,10 @@
         <td><a href="{:url('nickname')}">{:session('member.nickname')}</a></td>
     </tr>
     <tr>
+        <td>性别</td>
+        <td><a href="{:url('sex')}">{:session('member.sex')<1?'保密':(session('member.sex')>1?'女':'男')}</a></td>
+    </tr>
+    <tr>
         <td>登录时间</td>
         <td>{:session('member.logindatetime')}</td>
     </tr>
