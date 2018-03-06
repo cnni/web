@@ -57,3 +57,10 @@ if (!function_exists('timeToStr')) {
         echo floor($time % 60) . '秒';
     }
 }
+if (!function_exists('isNickname')) {
+    function isNickname($nickname = '')
+    {
+        $strlen = strlen($nickname);
+        return $strlen > 0 && $strlen < 17;
+    }
+}
