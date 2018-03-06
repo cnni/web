@@ -12,4 +12,8 @@ use think\Model;
 class Nickname extends Model
 {
     protected $pk = 'id';
+    protected $autoWriteTimestamp = 'datetime';
+    protected $createTime = 'addtime';
+    protected $updateTime = 'lasttime';
+    protected $readonly = ['nickname', 'member_id'];
 }
