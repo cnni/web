@@ -8,6 +8,7 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\Nickname;
 use app\common\model\NicknameMember;
 use app\common\model\UsernameLogout;
 
@@ -70,13 +71,91 @@ class Member extends Common
 
     public function nickname()
     {
-        $this->assign([
-            'title' => '昵称',
-            'keywords' => '昵称',
-            'description' => '昵称',
-            'list' => NicknameMember::where('member_id', '=', $this->member['id'])->order(['status' => 'desc', 'id'])->paginate(),
-        ]);
-        return $this->myfetch();
+        if (!$this->request->isAjax()) {
+            $this->assign([
+                'title' => '昵称',
+                'keywords' => '昵称',
+                'description' => '昵称',
+                'list' => NicknameMember::where('member_id', '=', $this->member['id'])->order(['id' => 'desc'])->paginate(),
+            ]);
+            return $this->myfetch();
+        }
+        $param = $this->request->only(['type']);
+        if (!isset($param['type'])) return $this->err(1, '参数错误');
+        switch ($param['type']) {
+            case 'add1':
+                $params = $this->request->only(['nickname']);
+                if (!isset($params['nickname'])) return $this->err(3, '昵称不能为空');
+                if (!isNickname($params['nickname'])) return $this->err(4, '昵称格式不正确');
+                $nickname = Nickname::getByNickname($params['nickname']);
+                if (!$nickname) {
+                    $nickname = new Nickname();
+                    $nickname->nickname = $params['nickname'];
+                    $nickname->member_id = $this->member['id'];
+                    if (!$nickname->save()) return $this->err(5, '新增失败');
+                    $member = \app\common\model\Member::get($this->member['id']);
+                    if (!$member) return $this->err(6, '查询会员信息失败');
+                    if (!$member->save(['nickname_id' => $nickname->id])) return $this->err(7, '更新失败');
+                    (new NicknameMember())->save([
+                        'nickname_id' => $nickname->id,
+                        'member_id' => $this->member['id'],
+                        'nickname' => $nickname->nickname,
+                    ]);
+                    session('member.nickname', $nickname->nickname);
+                    session('member.nickname_id', $nickname->id);
+                    return $this->succ();
+                }
+                if ($this->member['nickname_id'] == $nickname->id) return $this->err(8, '没有变化');
+                $member = \app\common\model\Member::get($this->member['id']);
+                if (!$member) return $this->err(9, '查询会员信息失败');
+                if (!$member->save(['nickname_id' => $nickname->id])) return $this->err(10, '更新失败');
+                $nicknameMember = NicknameMember::where('nickname_id', '=', $nickname->id)->where('member_id', '=', $this->member['id'])->find();
+                if (!$nicknameMember) (new NicknameMember())->save([
+                    'nickname_id' => $nickname->id,
+                    'member_id' => $this->member['id'],
+                    'nickname' => $nickname->nickname,
+                ]);
+                session('member.nickname', $nickname->nickname);
+                session('member.nickname_id', $nickname->id);
+                return $this->succ();
+            case 'add2':
+                $params = $this->request->only(['id']);
+                if (!isset($params['id'])) return $this->err(3, '参数错误');
+                $params['id'] = intval($params['id']);
+                if ($params['id'] < 1) return $this->err(4, '参数错误');
+                $nickname = Nickname::get($params['id']);
+                if (!$nickname) return $this->err(5, '没有找到记录');
+                if ($this->member['nickname_id'] == $nickname->id) return $this->err(6, '没有变化');
+                $member = \app\common\model\Member::get($this->member['id']);
+                if (!$member) return $this->err(7, '查询会员信息失败');
+                if (!$member->save(['nickname_id' => $nickname->id])) return $this->err(8, '更新失败');
+                $nicknameMember = NicknameMember::where('nickname_id', '=', $nickname->id)->where('member_id', '=', $this->member['id'])->find();
+                if (!$nicknameMember) (new NicknameMember())->save([
+                    'nickname_id' => $nickname->id,
+                    'member_id' => $this->member['id'],
+                    'nickname' => $nickname->nickname,
+                ]);
+                session('member.nickname', $nickname->nickname);
+                session('member.nickname_id', $nickname->id);
+                return $this->succ();
+            case 'up':
+                $params = $this->request->only(['id']);
+                if (!isset($params['id'])) return $this->err(3, '参数错误');
+                $params['id'] = intval($params['id']);
+                if ($params['id'] < 1) return $this->err(4, '参数错误');
+                $nicknameMember = NicknameMember::get($params['id']);
+                if (!$nicknameMember) return $this->err(5, '没有找到记录');
+                if ($nicknameMember->member_id != $this->member['id']) return $this->err(6, '非法操作');
+                if ($nicknameMember->nickname_id == $this->member['nickname_id']) return $this->err(7, '已设为默认无需重复设置');
+                $member = \app\common\model\Member::get($this->member['id']);
+                if (!$member) return $this->err(8, '查询会员信息失败');
+                if (!$member->save(['nickname_id' => $nicknameMember->nickname_id])) return $this->err(9, '更新失败');
+                session('member.nickname', $nicknameMember->nickname);
+                session('member.nickname_id', $nicknameMember->nickname_id);
+                return $this->succ();
+            default:
+                return $this->err(2, '参数错误');
+        }
     }
 
     public function sex()

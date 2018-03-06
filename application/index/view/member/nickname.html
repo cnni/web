@@ -3,15 +3,25 @@
     <tr>
         <th>昵称</th>
         <th>状态</th>
-        <th>添加或设置时间</th>
+        <th>
+            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#formNicknameAdd1">
+                我要设置新昵称
+            </button>
+        </th>
     </tr>
     </thead>
     <tbody>
     {foreach $list as $v}
-    <tr>
+    <tr vid="{$v.id}">
         <td>{$v.nickname}</td>
-        <td>{$v.status?'默认':''}</td>
-        <td>{$v.addtime}</td>
+        <td>
+            {if condition="$v['nickname_id']==session('member.nickname_id')"}
+            <span style="color: red">默认</span>
+            {else /}
+            <button type="button" class="btn btn-sm btn-default btn-nickname-status">设为默认</button>
+            {/if}
+        </td>
+        <td></td>
     </tr>
     {/foreach}
     </tbody>
@@ -21,3 +31,70 @@
     </tr>
     </tfoot>
 </table>
+<form class="modal" id="formNicknameAdd1">
+    <input type="hidden" name="type" value="add1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">新增昵称</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group form-row">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">昵称</div>
+                        </div>
+                        <input type="text" name="nickname" class="form-control" placeholder="昵称" required>
+                    </div>
+                </div>
+                <div class="form-group small" id="formNicknameAdd1Err" style="color: red"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('#formNicknameAdd1').on('submit', function (e) {
+        e.preventDefault();
+        var self = $(this);
+        $.ajax({
+            url: location.href,
+            type: 'post',
+            data: self.serialize(),
+            dataType: 'json',
+            success: function (r) {
+                if (r.status) {
+                    location.href = '{:url("nickname")}';
+                } else {
+                    $('#formNicknameAdd1Err').html(r.msg + '[' + r.code + ']');
+                }
+            }
+        });
+    });
+    $('.btn-nickname-status').on('click', function () {
+        var self = $(this);
+        $.ajax({
+            url: location.href,
+            type: 'post',
+            data: {
+                type: 'up',
+                id: self.parents('tr').attr('vid'),
+            },
+            dataType: 'json',
+            success: function (r) {
+                if (r.status) {
+                    location.href = '{:url("nickname")}';
+                } else {
+                    alert(r.msg + '[' + r.code + ']');
+                }
+            }
+        });
+    });
+</script>
