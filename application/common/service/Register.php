@@ -54,6 +54,8 @@ class Register extends Common
             'logintime' => time(),
             'logindatetime' => date('Y-m-d H:i:s'),
             'sex' => $member->sex,
+            'avatar' => 'http://cnniimg.kushao.com/avatar/0.png',
+            'avatar_id' => 0,
         ]);
         (new UsernameLogin())->save([
             'member_id' => $member->id,
