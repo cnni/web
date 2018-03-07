@@ -45,6 +45,7 @@ class Member extends Common
         switch ($this->member['logintype']) {
             case 'username':
                 (new UsernameLogout())->save([
+                    'member_id' => $this->member['id'],
                     'username_id' => $this->member['username_id'],
                     'username' => $this->member['username'],
                     'onlinetime' => time() - $this->member['logintime'],
