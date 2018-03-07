@@ -39,10 +39,19 @@ class Login extends Common
             'logintime' => time(),
             'logindatetime' => date('Y-m-d H:i:s'),
             'sex' => $member->sex,
+            'avatar_id' => $member->avatar_id,
+            'avatar' => 'http://cnniimg.kushao.com/avatar/0.png',
         ]);
         if ($member->nickname_id) {
             $nickname = Nickname::get($member->nickname_id);
             if ($nickname) session('member.nickname', $nickname->nickname);
+        }
+        if ($member->avatar_id) {
+            $avatar = db('avatar')->alias('a')->join([
+                ['file f', 'f.id=a.file_id'],
+                ['file_server fs', 'fs.id=f.server_id'],
+            ])->where('a.id', '=', $member->avatar_id)->field(['fs.ssl', 'fs.domain', 'f.url'])->find();
+            if ($avatar) session('member.avatar', ($avatar['ssl'] ? 'https://' : 'http://') . $avatar['domain'] . $avatar['url']);
         }
         (new UsernameLogin())->save([
             'member_id' => $member->id,
