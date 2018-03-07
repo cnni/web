@@ -15,5 +15,5 @@ class File extends Model
     protected $autoWriteTimestamp = 'datetime';
     protected $createTime = 'addtime';
     protected $updateTime = 'lasttime';
-    protected $readonly = ['name', 'url', 'server_id', 'md5', 'member_id'];
+    protected $readonly = ['name', 'url', 'server_id', 'md5', 'member_id', 'size'];
 }
