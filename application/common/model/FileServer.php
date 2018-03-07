@@ -15,5 +15,6 @@ class FileServer extends Model
     protected $autoWriteTimestamp = 'datetime';
     protected $createTime = 'addtime';
     protected $updateTime = 'lasttime';
+    protected $json = ['extend'];
     protected $readonly = ['type', 'type_id'];
 }
