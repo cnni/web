@@ -185,4 +185,26 @@ class Member extends Common
         session('member.sex', $param['sex']);
         return $this->succ();
     }
+
+    public function avatar()
+    {
+        if (!$this->request->isAjax()) {
+            $this->assign([
+                'title' => '头像',
+                'keywords' => '头像',
+                'description' => '头像',
+                'list' => db('avatar_member')->alias('am')->join([
+                    ['file f', 'f.id=am.file_id'],
+                    ['file_server fs', 'fs.id=f.server_id'],
+                ])->where('am.member_id', '=', $this->member['id'])->field([
+                    'am.id',
+                    'am.avatar_id',
+                    'fs.ssl',
+                    'fs.domain',
+                    'f.url',
+                ])->order(['am.id' => 'desc'])->paginate(),
+            ]);
+            return $this->myfetch();
+        }
+    }
 }

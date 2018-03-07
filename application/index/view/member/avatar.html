@@ -1,0 +1,29 @@
+<table class="table">
+    <thead>
+    <th>我的头像</th>
+    <th><a href="{:url('avatarup')}" class="btn btn-primary btn-sm">我要上传新的头像</a></th>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="2">
+            {foreach $list as $v}
+            <div class="img-thumbnail">
+                <img src="http{$v.ssl?'s':''}://{$v.domain}{$v.url}!w200h200">
+                <p>
+                    {if condition='$v["avatar_id"]==session("member.avatar_id")'}
+                    <span style="color: red">默认</span>
+                    {else /}
+                    <button type="button" vid="{$v.id}" class="btn btn-sm btn-default btn-avatar">设为默认</button>
+                    {/if}
+                </p>
+            </div>
+            {/foreach}
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2">{$list->render()}</td>
+    </tr>
+    </tfoot>
+</table>
