@@ -15,5 +15,5 @@ class Avatar extends Model
     protected $autoWriteTimestamp = 'datetime';
     protected $createTime = 'addtime';
     protected $updateTime = 'lasttime';
-    protected $readonly = ['member_id', 'file_id', 'width', 'height'];
+    protected $readonly = ['member_id', 'file_id'];
 }
