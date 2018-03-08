@@ -8,9 +8,11 @@
 namespace app\index\controller;
 
 use app\common\controller\Common;
+use app\common\model\FileServer;
 use app\common\model\Nickname;
 use app\common\model\NicknameMember;
 use app\common\model\UsernameLogout;
+use app\common\service\Upyun;
 
 class Member extends Common
 {
@@ -206,5 +208,35 @@ class Member extends Common
             ]);
             return $this->myfetch();
         }
+    }
+
+    public function avatarup()
+    {
+        if (!$this->request->isAjax()) {
+            $fileServer = [];
+            foreach (FileServer::where('status', '=', '1')->select() as $v) {
+                $fileServer[$v->id] = [
+                    'id' => $v->id,
+                    'type' => $v['type'],
+                ];
+                switch ($v['type']) {
+                    case 'upyun':
+                        $fileServer[$v->id]['service'] = $v->extend->service;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            $this->assign([
+                'title' => '头像上传',
+                'keywords' => '头像上传',
+                'description' => '头像上传',
+                'fileServer' => $fileServer,
+            ]);
+            return $this->myfetch();
+        }
+        $param = $this->request->only(['name', 'md5', 'filetype', 'server_id', 'size']);
+        $param['type'] = 'avatar';
+        return (new Upyun())->policy($param);
     }
 }

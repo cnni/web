@@ -6,6 +6,7 @@
             <a href="{:url('@index/member/username')}" class="btn btn-block {if condition='request()->action()=="username"'} btn-primary{else /} btn-link{/if}">用户名</a>
             <a href="{:url('@index/member/nickname')}" class="btn btn-block {if condition='request()->action()=="nickname"'} btn-primary{else /} btn-link{/if}">昵称</a>
             <a href="{:url('@index/member/sex')}" class="btn btn-block {if condition='request()->action()=="sex"'} btn-primary{else /} btn-link{/if}">性别</a>
+            <a href="{:url('@index/member/avatar')}" class="btn btn-block {if condition='request()->action()=="avatar" || request()->action()=="avatarup"'} btn-primary{else /} btn-link{/if}">头像</a>
         </div>
         <div class="col-sm-9 col-md-10 col-lg-10 col-xs-10">{php}echo $myfetch;{/php}</div>
     </div>

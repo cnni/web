@@ -26,6 +26,10 @@
         <td><a href="{:url('nickname')}">{:session('member.nickname')}</a></td>
     </tr>
     <tr>
+        <td>头像</td>
+        <td><a href="{:url('avatar')}"><img src="{:session('member.avatar')}!w200h200"></a></td>
+    </tr>
+    <tr>
         <td>性别</td>
         <td><a href="{:url('sex')}">{:session('member.sex')<1?'保密':(session('member.sex')>1?'女':'男')}</a></td>
     </tr>

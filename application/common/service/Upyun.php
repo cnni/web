@@ -47,22 +47,24 @@ class Upyun extends Common
             $upyunCache->upyun_id = $fileServer->type_id;
             $upyunCache->server_id = $fileServer->id;
             if (!isset($data['filetype'])) return $this->err(8, '参数错误');
+            $upyunCacheExtend = [];
             switch ($data['filetype']) {
                 case 'image/jpeg':
-                    $upyunCache->extend->type = 'jpeg';
+                    $upyunCacheExtend['type'] = 'jpeg';
                     break;
                 case 'image/jpg':
-                    $upyunCache->extend->type = 'jpg';
+                    $upyunCacheExtend['type'] = 'jpg';
                     break;
                 case 'image/png':
-                    $upyunCache->extend->type = 'png';
+                    $upyunCacheExtend['type'] = 'png';
                     break;
                 case 'image/gif':
-                    $upyunCache->extend->type = 'gif';
+                    $upyunCacheExtend['type'] = 'gif';
                     break;
                 default:
                     return $this->err(9, '上传类型错误');
             }
+            $upyunCache->extend = $upyunCacheExtend;
             if (!$upyunCache->save()) return $this->err(10, '缓存失败');
             $upyun = new Config($fileServer->extend->service, $fileServer->extend->username, $fileServer->extend->password);
             $upyun->setFormApiKey($fileServer->extend->formApiKey);
@@ -91,7 +93,7 @@ class Upyun extends Common
                     $avatarMember->file_id = $avatar->file_id;
                     $avatarMember->member_id = $this->member['id'];
                     if (!$avatarMember->save()) return $this->err(12, '上传失败');
-                    return $this->succ([], 1);
+                    return $this->succ();
                 }
                 $avatar = new Avatar();
                 $avatar->member_id = $this->member['id'];

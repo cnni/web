@@ -1,0 +1,104 @@
+<form class="modal-dialog" id="avatarForm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">头像上传</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">请选择</div>
+                    </div>
+                    <input type="file" class="form-control" accept="image/png,image/jpg,image/jpeg,image/gif">
+                </div>
+            </div>
+            <div class="form-group small" id="avatarFormErr" style="color: red"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">确定</button>
+        </div>
+    </div>
+</form>
+<script src="https://cdn.bootcss.com/spark-md5/3.0.0/spark-md5.min.js"></script>
+<script>
+    var fileServer = [{foreach $fileServer as $v}{id : {$v.id}, type : '{$v.type}', {switch v.type}{case upyun}service : '{$v.service}'{/case}{/switch}},{/foreach}];
+    $('#avatarForm').on('submit', function (e) {
+        e.preventDefault();
+        var self = $(this);
+        var ser = fileServer[Math.floor(Math.random() * fileServer.length)];
+        switch (ser.type) {
+            case 'upyun':
+                var file = self.find('input[type="file"]')[0].files;
+                if(file.length<1){
+                    $('#avatarFormErr').html('请选择文件');
+                    break;
+                }
+                $('#avatarFormErr').html('');
+                var reader = new FileReader();
+                var type = true;
+                reader.readAsDataURL(file[0]);
+                reader.onload = function () {
+                    if (type) {
+                        var bin = atob(this.result.split(';base64,')[1]);
+                        var buffer = new Uint8Array(bin.length);
+                        for (var i = 0; i < bin.length; i++) {
+                            buffer[i] = bin.charCodeAt(i);
+                        }
+                        var blob = new Blob([buffer.buffer], {type: file[0].type});
+                        type = false;
+                        reader.readAsBinaryString(blob);
+                    } else {
+                        var spark = new SparkMD5();
+                        spark.appendBinary(this.result);
+                        $.ajax({
+                            url: location.href,
+                            type: 'post',
+                            dataType: 'json',
+                            async: false,
+                            data: {
+                                name: file[0].name,
+                                md5: spark.end(),
+                                filetype: file[0].type,
+                                server_id: ser.id,
+                                size: file[0].size,
+                            },
+                            success: function (r) {
+                                if (r.status) {
+                                    if (r.code) {
+                                        var uploadData = new FormData($('<form></form>')[0]);
+                                        uploadData.append('authorization', r.data.authorization);
+                                        uploadData.append('policy', r.data.policy);
+                                        uploadData.append('file', file[0]);
+                                        $.ajax({
+                                            url: 'http://v0.api.upyun.com/'+ser.service,
+                                            type: 'post',
+                                            dataType: 'json',
+                                            async: false,
+                                            data: uploadData,
+                                            cache: false,
+                                            processData: false,
+                                            contentType: false,
+                                        }).done(function (rs, textStatus) {
+                                            if (rs.code == 200) {
+                                                location.href = '{:url("avatar")}';
+                                            } else {
+                                                $('#avatarFormErr').html('上传失败[' + rs.code + ']');
+                                            }
+                                        }).fail(function (res, textStatus, error) {
+                                        });
+                                    } else {
+                                        location.href = '{:url("avatar")}';
+                                    }
+                                } else {
+                                    $('#avatarFormErr').html(r.msg + '[' + r.code + ']');
+                                }
+                            }
+                        });
+                    }
+                };
+                break;
+            default:
+                break;
+        }
+    })
+</script>
