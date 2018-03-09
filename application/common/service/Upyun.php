@@ -36,7 +36,7 @@ class Upyun extends Common
             switch ($data['type']) {
                 case 'avatar':
                     $upyunCache->url = '/avatar/' . date('Y/m/d/') . $this->member['id'] . '_' . uniqid();
-                    $callback = url('@upyun/callback/avatar');
+                    $callback = 'http://upyun.cn.ni/callback/avatar';
                     $fileType = 'jpg,jpeg,png,gif';
                     break;
                 default:
