@@ -16,5 +16,5 @@ class UpyunCache extends Model
     protected $createTime = 'addtime';
     protected $updateTime = 'lasttime';
     protected $json = ['extend'];
-    protected $readonly = ['member_id', 'name', 'md5', 'url', 'upyun_id', 'server_id', 'extend'];
+    protected $readonly = ['member_id', 'name', 'md5', 'url', 'upyun_id', 'server_id', 'size', 'extend'];
 }
