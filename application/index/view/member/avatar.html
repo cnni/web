@@ -5,9 +5,9 @@
     </thead>
     <tbody>
     <tr>
-        <td colspan="2">
+        <td colspan="2" class="row">
             {foreach $list as $v}
-            <div class="img-thumbnail">
+            <div class="img-thumbnail col-sm-6 col-md-6 col-xs-6 col-lg-6">
                 <img src="http{$v.ssl?'s':''}://{$v.domain}{$v.url}!w200h200">
                 <p>
                     {if condition='$v["avatar_id"]==session("member.avatar_id")'}
