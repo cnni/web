@@ -15,5 +15,5 @@ class UpyunLog extends Model
     protected $autoWriteTimestamp = 'datetime';
     protected $createTime = 'addtime';
     protected $updateTime = false;
-    protected $json = ['post', 'server'];
+    protected $json = ['post', 'server', 'more'];
 }
