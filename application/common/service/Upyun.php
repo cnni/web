@@ -72,6 +72,7 @@ class Upyun extends Common
                 'bucket' => $fileServer->extend->service,
                 'save-key' => $upyunCache->url,
                 'expiration' => time() + 1800,
+                'content-md5' => $upyunCache->md5,
                 'notify-url' => $callback,
                 'allow-file-type' => $fileType,
                 //'x-gmkerl-type' => 'get_theme_color',
