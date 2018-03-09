@@ -68,10 +68,13 @@ class Upyun extends Common
             if (!$upyunCache->save()) return $this->err(10, '缓存失败');
             $upyun = new Config($fileServer->extend->service, $fileServer->extend->username, $fileServer->extend->password);
             $upyun->setFormApiKey($fileServer->extend->formApiKey);
+            $time = time();
+            $date = gmdate('D, d M Y H:i:s \G\M\T', $time);
             $policy = Util::base64Json([
                 'bucket' => $fileServer->extend->service,
                 'save-key' => $upyunCache->url,
-                'expiration' => time() + 1800,
+                'expiration' => $time + 1800,
+                'date' => $date,
                 'content-md5' => $upyunCache->md5,
                 'notify-url' => $callback,
                 'allow-file-type' => $fileType,
@@ -80,7 +83,7 @@ class Upyun extends Common
             ]);
             return $this->succ([
                 'policy' => $policy,
-                'authorization' => Signature::getBodySignature($upyun, 'POST', '/' . $fileServer->extend->service, null, $policy),
+                'authorization' => Signature::getBodySignature($upyun, 'POST', '/' . $fileServer->extend->service, $date, $policy),
             ], 1);
         }
         switch ($data['type']) {
